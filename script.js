@@ -41,8 +41,9 @@ const phraseDictionary = {
     "put all your eggs in one basket": "Ставить всё на одну карту"
 };
 
-const inputLetter = document.getElementById('inputLetter');
+const inputPhrase = document.getElementById('inputPhrase');
 const suggestionsDiv = document.getElementById('suggestions');
+const outputTranslation = document.getElementById('outputTranslation');
 
 // Функция для отображения подсказок
 function showSuggestions(letter) {
@@ -64,14 +65,21 @@ function showSuggestions(letter) {
         suggestionItem.className = 'suggestion-item';
         suggestionItem.textContent = phrase;
         suggestionItem.addEventListener('click', () => {
-            alert(`Перевод: ${phraseDictionary[phrase]}`);
+            inputPhrase.value = phrase; // Вставляем фразу в поле ввода
+            suggestionsDiv.innerHTML = ''; // Очищаем подсказки
         });
         suggestionsDiv.appendChild(suggestionItem);
     });
 }
 
+// Функция для перевода фразеологизма
+function translatePhrase() {
+    const phrase = inputPhrase.value.toLowerCase();
+    outputTranslation.textContent = phraseDictionary[phrase] || "Перевод не найден. Попробуйте другой фразеологизм.";
+}
+
 // Слушаем ввод пользователя
-inputLetter.addEventListener('input', (event) => {
+inputPhrase.addEventListener('input', (event) => {
     const letter = event.target.value;
     showSuggestions(letter);
 });
