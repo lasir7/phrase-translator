@@ -1,11 +1,5 @@
-// script.js
-function translatePhrase() {
-    const inputPhrase = document.getElementById('inputPhrase').value.toLowerCase();
-    const outputTranslation = document.getElementById('outputTranslation');
-
-    // Пример базы данных фразеологизмов
-    const phraseDictionary = {
-  "break the ice": "Делать первый шаг",
+const phraseDictionary = {
+    "break the ice": "Делать первый шаг",
     "piece of cake": "Пустячное дело",
     "hit the nail on the head": "Попасть в самую точку",
     "let the cat out of the bag": "Выдать секрет",
@@ -15,12 +9,10 @@ function translatePhrase() {
     "kick the bucket": "Отправиться на тот свет",
     "when pigs fly": "После дождичка в четверг",
     "barking up the wrong tree": "Искать не там, где нужно",
-
-    // Дополнительные фразеологизмы
     "beat around the bush": "Ходить вокруг да около",
     "bite the bullet": "Стиснуть зубы",
     "blessing in disguise": "Не было бы счастья, да несчастье помогло",
-    "burn bridges": "Разрушать взаимоотношения",
+    "burn bridges": "Сжигать мосты",
     "call it a day": "Закончить на сегодня",
     "cut corners": "Экономить на качестве",
     "devil's advocate": "Адвокат дьявола",
@@ -47,11 +39,39 @@ function translatePhrase() {
     "hit the hay": "Идти спать",
     "let the chips fall where they may": "Пусть будет, как будет",
     "put all your eggs in one basket": "Ставить всё на одну карту"
-    };
+};
 
-    if (phraseDictionary[inputPhrase]) {
-        outputTranslation.textContent = phraseDictionary[inputPhrase];
-    } else {
-        outputTranslation.textContent = "Перевод не найден. Попробуйте другой фразеологизм.";
+const inputLetter = document.getElementById('inputLetter');
+const suggestionsDiv = document.getElementById('suggestions');
+
+// Функция для отображения подсказок
+function showSuggestions(letter) {
+    suggestionsDiv.innerHTML = ''; // Очищаем предыдущие подсказки
+
+    if (!letter) return; // Если буква не введена, ничего не показываем
+
+    const filteredPhrases = Object.keys(phraseDictionary).filter(phrase => 
+        phrase.toLowerCase().startsWith(letter.toLowerCase())
+    );
+
+    if (filteredPhrases.length === 0) {
+        suggestionsDiv.innerHTML = '<p>Нет фразеологизмов на эту букву.</p>';
+        return;
     }
+
+    filteredPhrases.forEach(phrase => {
+        const suggestionItem = document.createElement('div');
+        suggestionItem.className = 'suggestion-item';
+        suggestionItem.textContent = phrase;
+        suggestionItem.addEventListener('click', () => {
+            alert(`Перевод: ${phraseDictionary[phrase]}`);
+        });
+        suggestionsDiv.appendChild(suggestionItem);
+    });
 }
+
+// Слушаем ввод пользователя
+inputLetter.addEventListener('input', (event) => {
+    const letter = event.target.value;
+    showSuggestions(letter);
+});
